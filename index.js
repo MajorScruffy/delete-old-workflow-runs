@@ -2,9 +2,14 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
+  // `repository-name` input defined in action.yml
+  const repositoryName = core.getInput('repository-name');
+  console.log(`Hello ${repositoryName}!`);
+
+  // `access-token` input defined in action.yml
+  const accessToken = core.getInput('access-token');
+  console.log(`Hello ${accessToken}!`);
+
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
   // Get the JSON webhook payload for the event that triggered the workflow

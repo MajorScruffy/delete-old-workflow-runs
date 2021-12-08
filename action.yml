@@ -1,10 +1,12 @@
 name: 'Hello World'
 description: 'Greet someone and record the time'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  repository-name:
+    description: 'The name of the repository for which to delete old workflow runs'
     required: true
-    default: 'World'
+  access-token:
+    description: 'A personal access token with "workflows" permission'
+    required: true
 outputs:
   time: # id of output
     description: 'The time we greeted you'
