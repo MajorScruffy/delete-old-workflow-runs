@@ -6,8 +6,6 @@ const { Octokit } = require("@octokit/action");
 main();
 
 async function main() {
-  const time = Date.now();
-
   try {
     const octokit = new Octokit();
 
@@ -27,6 +25,7 @@ async function main() {
     const branch = core.getInput('branch');
     const event = core.getInput('event');
     const status = core.getInput('status');
+    const whatIf = core.getInput('what-if');
 
     core.info(`Applying filters:`);
 
@@ -62,6 +61,10 @@ async function main() {
       core.info(`status: ${status}`);
     }
 
+    if(!!whatIf){
+      core.info(`Running in what-if mode. The following workflows would be deleted if what-if was 'false':`);
+    }
+
     for(;;) {
       parameters["page"]++;
 
@@ -84,7 +87,6 @@ async function main() {
         }
 
         if(!!olderThanSeconds && (new Date() - createdAt) / 1000 < olderThanSeconds){
-          core.info(`Skipped workflow run "${workflowRun.head_commit.message}" with ID:${workflowRun.id}...`);
           continue;
         }
 
@@ -93,6 +95,10 @@ async function main() {
         }
 
         core.info(`Deleting workflow run "${workflowRun.head_commit.message}" with ID:${workflowRun.id}...`);
+
+        if(!!whatIf){
+          continue;
+        }
 
         let deleteParameters = [];
         deleteParameters["run_id"] = 0;

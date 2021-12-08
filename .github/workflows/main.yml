@@ -20,5 +20,6 @@ jobs:
           # branch: main
           # event: push
           # event: completed
+          what-if: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
