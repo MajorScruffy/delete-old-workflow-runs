@@ -1,18 +1,18 @@
 on: [push]
 
 jobs:
-  hello_world_job:
+  delete-workflow-runs:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: A demo job to delete workflow runs
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Hello world action step
+      - name: Delete workflow runs
         uses: ./ # Uses an action in the root directory
-        id: hello
+        id: delete-workflow-runs
         with:
-          repository: MajorScruffy/delete-old-workflow-runs
+          repository: MajorScruffy/delete-workflow-runs
           # workflow: ".github/workflows/main.yml"
           older-than-seconds: 3600
           # created-before: "2021-12-08T16:34:00Z"
@@ -22,7 +22,3 @@ jobs:
           # event: completed
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
