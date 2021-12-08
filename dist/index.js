@@ -50681,12 +50681,17 @@ async function main() {
 
       const { status, headers, data } = await octokit.request(requestOptions);
 
+
       core.info(`< ${status} ${Date.now() - time}ms`);
       core.info(JSON.stringify(headers));
-      core.info(JSON.stringify(data.workflow_runs.map(x => x.head_commit.message)));
+
+      if(data){
+        core.info(JSON.stringify(data.workflow_runs.map(x => x.head_commit.message)));
+      }
+      
 
       core.setOutput("status", status);
-    } while (data.workflow_runs > 0);
+    } while (!!data && data.workflow_runs > 0);
   } catch (error) {
     if (error.status) {
       core.info(`< ${error.status} ${Date.now() - time}ms`);
