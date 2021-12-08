@@ -33,8 +33,6 @@ async function main() {
       ),
     };
 
-    core.debug(`route: ${inspect(route)}`);
-    core.debug(`parameters: ${inspect(parameters)}`);
     core.debug(`parsed request options: ${inspect(requestOptions)}`);
 
     const { status, headers, data } = await octokit.request(requestOptions);
