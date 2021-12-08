@@ -8,8 +8,8 @@ inputs:
     description: 'A personal access token with "workflows" permission'
     required: true
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  status: # id of output
+    description: 'The status of the HTTP request'
 runs:
   using: 'node12'
   main: 'dist/index.js'
