@@ -50706,11 +50706,7 @@ async function main() {
         parameters
       );
 
-      let { status, headers, data } = await octokit.request(requestOptions);
-
-      core.info(inspect(data.workflow_runs.map(x => x.head_commit.message)));
-
-      core.setOutput("status", status);
+      let { data } = await octokit.request(requestOptions);
 
       if(data.workflow_runs <= 0){
         break;
@@ -50720,12 +50716,10 @@ async function main() {
         const createdAt = new Date(workflowRun.created_at);
 
         if(!!workflow && workflowRun.name != workflow){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
           continue;
         }
 
         if(!!createdBeforeDate && createdBeforeDate < createdAt){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
           continue;
         }
 
@@ -50739,19 +50733,16 @@ async function main() {
           deleteParameters
         );
 
-        /*core.info(`parsed request options: ${inspect(requestOptions)}`);
+        core.info(`parsed request options: ${inspect(requestOptions)}`);
 
-        let { status, headers, data } = await octokit.request(requestOptions);
-
-        core.info(`< ${status} ${Date.now() - time}ms`);
-        core.info(inspect(headers));
+        let { status } = await octokit.request(requestOptions);
 
         if(status == 204){
           core.info(`Deleted workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
         }
         else{
           core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
-        }*/
+        }
       }
     }
   } catch (error) {
@@ -50759,7 +50750,6 @@ async function main() {
       core.info(`< ${error.status} ${Date.now() - time}ms`);
     }
 
-    core.setOutput("status", error.status);
     core.info(inspect(error));
     core.setFailed(error.message);
   }

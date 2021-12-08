@@ -22,9 +22,6 @@ inputs:
   status:
     description: Returns workflow runs with the given status. Can be one of queued, in_progress, or completed.
     required: false
-outputs:
-  status: # id of output
-    description: The status of the HTTP request
 runs:
   using: node12
   main: 'dist/index.js'
