@@ -2,7 +2,7 @@ name: Delete workflow runs
 description: Delete workflow runs that match the given filters
 inputs:
   repository:
-    description: The repository for which to delete old workflow runs.
+    description: The repository for which to delete workflow runs.
     required: true
   workflow:
     description: The path to the workflow's .yml file.

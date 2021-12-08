@@ -1,22 +1,22 @@
 {
-  "name": "delete-old-workflow-runs",
+  "name": "delete-workflow-runs",
   "version": "1.0.0",
-  "description": "A GitHub Action used to delete old workflow runs from a repository.",
+  "description": "A GitHub Action used to delete workflow runs from a repository.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MajorScruffy/delete-old-workflow-runs.git"
+    "url": "git+https://github.com/MajorScruffy/delete-workflow-runs.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MajorScruffy/delete-old-workflow-runs/issues"
+    "url": "https://github.com/MajorScruffy/delete-workflow-runs/issues"
   },
-  "homepage": "https://github.com/MajorScruffy/delete-old-workflow-runs#readme",
+  "homepage": "https://github.com/MajorScruffy/delete-workflow-runs#readme",
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/github": "^5.0.0",
