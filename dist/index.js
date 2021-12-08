@@ -50658,17 +50658,17 @@ async function main() {
     let parameters = [];
     parameters["page"] = 0;
 
-    do {
+    for(;;) {
       parameters["page"]++;
 
       // workaround for https://github.com/octokit/request-action/issues/71
       // un-encode "repo" in /repos/{repo} URL when "repo" parameter is set to ${{ github.repository }}
-      const { url, body, ...options } = octokit.request.endpoint(
+      let { url, body, ...options } = octokit.request.endpoint(
         `GET /repos/${repository}/actions/runs`,
         parameters
       );
 
-      const requestOptions = {
+      let requestOptions = {
         ...options,
         data: body,
         url: url.replace(
@@ -50679,26 +50679,26 @@ async function main() {
 
       core.info(`parsed request options: ${inspect(requestOptions)}`);
 
-      const { status, headers, data } = await octokit.request(requestOptions);
+      let { status, headers, data } = await octokit.request(requestOptions);
 
 
       core.info(`< ${status} ${Date.now() - time}ms`);
-      core.info(JSON.stringify(headers));
-
-      if(data){
-        core.info(JSON.stringify(data.workflow_runs.map(x => x.head_commit.message)));
-      }
-      
+      core.info(inspect(headers));
+      core.info(inspect(data.workflow_runs.map(x => x.head_commit.message)));
 
       core.setOutput("status", status);
-    } while (!!data && data.workflow_runs > 0);
+
+      if(data.workflow_runs <= 0){
+        break;
+      }
+    } 
   } catch (error) {
     if (error.status) {
       core.info(`< ${error.status} ${Date.now() - time}ms`);
     }
 
     core.setOutput("status", error.status);
-    core.debug(inspect(error));
+    core.info(inspect(error));
     core.setFailed(error.message);
   }
 }
