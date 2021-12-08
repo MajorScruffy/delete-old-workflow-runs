@@ -50683,7 +50683,7 @@ async function main() {
 
       core.info(`< ${status} ${Date.now() - time}ms`);
       core.info(JSON.stringify(headers));
-      core.info(JSON.stringify(data));
+      core.info(JSON.stringify(data.workflow_runs.map(x => x.head_commit.message)));
 
       core.setOutput("status", status);
     } while (data.workflow_runs > 0);
