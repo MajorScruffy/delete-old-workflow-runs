@@ -41,8 +41,6 @@ async function main() {
 
       const { status, headers, data } = await octokit.request(requestOptions);
 
-      data.workflow_runs
-
       core.info(`< ${status} ${Date.now() - time}ms`);
       core.info(JSON.stringify(headers));
       core.info(JSON.stringify(data));
