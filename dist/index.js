@@ -50658,11 +50658,14 @@ async function main() {
     // `access-token` input defined in action.yml
     const accessToken = core.getInput('access-token');
 
+    let parameters;
+    parameters["page"] = 2;
+
     // workaround for https://github.com/octokit/request-action/issues/71
     // un-encode "repo" in /repos/{repo} URL when "repo" parameter is set to ${{ github.repository }}
     const { url, body, ...options } = octokit.request.endpoint(
       "GET /repos/MajorScruffy/delete-old-workflow-runs/actions/runs",
-      []
+      parameters
     );
     const requestOptions = {
       ...options,
@@ -50673,7 +50676,7 @@ async function main() {
       ),
     };
 
-    core.debug(`parsed request options: ${inspect(requestOptions)}`);
+    core.info(`parsed request options: ${inspect(requestOptions)}`);
 
     const { status, headers, data } = await octokit.request(requestOptions);
 
