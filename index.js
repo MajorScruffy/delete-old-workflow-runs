@@ -30,7 +30,6 @@ async function main() {
 
       let { status, headers, data } = await octokit.request(requestOptions);
 
-
       core.info(`< ${status} ${Date.now() - time}ms`);
       core.info(inspect(headers));
       core.info(inspect(data.workflow_runs.map(x => x.head_commit.message)));
@@ -39,6 +38,28 @@ async function main() {
 
       if(data.workflow_runs <= 0){
         break;
+      }
+
+      for (const workflowRun of data.workflow_runs) {
+        if(workflowRun.head_commit.message == "Followed documentation to create JS action"){
+          core.info(`Deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+
+          let deleteParameters = [];
+          deleteParameters["run_id"] = 0;
+
+          let requestOptions = octokit.request.endpoint(
+            `DELETE /repos/${repository}/actions/runs/${workflowRun.id}`,
+            deleteParameters
+          );
+
+          core.info(`parsed request options: ${inspect(requestOptions)}`);
+
+          let { status, headers, data } = await octokit.request(requestOptions);
+
+          core.info(`< ${status} ${Date.now() - time}ms`);
+          core.info(inspect(headers));
+          core.info(inspect(data));
+        }
       }
     } 
   } catch (error) {
