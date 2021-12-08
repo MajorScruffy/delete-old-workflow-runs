@@ -1,6 +1,4 @@
 on: [push]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   hello_world_job:

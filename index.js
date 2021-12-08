@@ -15,10 +15,7 @@ async function main() {
     const repositoryName = core.getInput('repository-name');
     core.info(repositoryName);
 
-    // `access-token` input defined in action.yml
-    const accessToken = core.getInput('access-token');
-
-    let parameters;
+    let parameters = [];
     parameters["page"] = 2;
 
     // workaround for https://github.com/octokit/request-action/issues/71

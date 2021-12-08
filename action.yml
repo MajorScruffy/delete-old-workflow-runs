@@ -4,9 +4,6 @@ inputs:
   repository-name:
     description: 'The name of the repository for which to delete old workflow runs'
     required: true
-  access-token:
-    description: 'A personal access token with "workflows" permission'
-    required: true
 outputs:
   status: # id of output
     description: 'The status of the HTTP request'
