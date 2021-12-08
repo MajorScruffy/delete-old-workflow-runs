@@ -11,31 +11,31 @@ env:
 
 ## Inputs
 
-## `repository` **required**
+### `repository` **required**
 This is the repository for which to delete workflow runs. Should be in the format `{user}/{repository}`
 
-## `workflow`
+### `workflow`
 The path to the workflow's .yml file. For example `.github/workflows/main.yml`. Use this parameter in case you have multiple workflows in the same repository, but you only want to delete the workflow runs for a single workflow.
 
-## `older-than-seconds`
+### `older-than-seconds`
 Use this parameter to delete only the workflow runs that are older than the given number of seconds. If this parameter is set, the `created-before` parameter will be ignored.
 
-## `created-before`
+### `created-before`
 Use this parameter to delete only the workflow runs that were created before the given date in ISO 8601 format. For example, `2021-12-08T16:34:00Z`. This parameter is ignored if `older-than-seconds` is set.
 
-## `actor`
+### `actor`
 Delete only the workflow runs for the given GitHub user. This is the e-mail address of the user who pushed the code.
 
-## `branch`
+### `branch`
 Delete only the workflow runs on the given branch.
 
-## `event`
+### `event`
 Delete only the workflow runs triggered by the given event type. For example, push, pull_request or issue.
 
-## `status`
+### `status`
 Delete only the workflow runs with the give status. Can be one of queued, in_progress, or completed.
 
-## `what-if`
+### `what-if`
 Set to true to preview the changes made by this action without deleting any workflow runs. Defaults to false.
 
 ## Example usage
