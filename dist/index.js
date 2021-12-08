@@ -50701,12 +50701,8 @@ async function main() {
         parameters
       );
 
-      core.info(`parsed request options: ${inspect(requestOptions)}`);
-
       let { status, headers, data } = await octokit.request(requestOptions);
 
-      core.info(`< ${status} ${Date.now() - time}ms`);
-      core.info(inspect(headers));
       core.info(inspect(data.workflow_runs.map(x => x.head_commit.message)));
 
       core.setOutput("status", status);

@@ -14,7 +14,8 @@ jobs:
         with:
           repository: MajorScruffy/delete-old-workflow-runs
           # created-before: "2021-12-09T16:34:00Z"
-          actor: test@test.com
+          # actor: test@test.com
+          branch: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
