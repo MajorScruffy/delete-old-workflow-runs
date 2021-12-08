@@ -14,6 +14,7 @@ jobs:
         id: hello
         with:
           repository: MajorScruffy/delete-old-workflow-runs
+          created-before: "2021-12-08T16:34:00Z"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Use the output from the `hello` step

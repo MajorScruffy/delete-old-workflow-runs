@@ -50655,6 +50655,12 @@ async function main() {
     const repository = core.getInput('repository');
     core.info(repository);
 
+    const createdBefore = core.getInput('created-before');
+    core.info(createdBefore);
+
+    const createdBeforeDate = new Date(createdBefore)
+    core.info(inspect(createdBeforeDate));
+
     let parameters = [];
     parameters["page"] = 0;
 
@@ -50681,9 +50687,14 @@ async function main() {
       }
 
       for (const workflowRun of data.workflow_runs) {
-        if(workflowRun.head_commit.message == "Followed documentation to create JS action"){
-          core.info(`Deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+        if(createdBeforeDate < workflowRun.created_at){
+          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+          continue;
+        }
 
+        core.info(`Deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+
+        if(workflowRun.head_commit.message == "Followed documentation to create JS action"){
           let deleteParameters = [];
           deleteParameters["run_id"] = 0;
 
@@ -50698,7 +50709,13 @@ async function main() {
 
           core.info(`< ${status} ${Date.now() - time}ms`);
           core.info(inspect(headers));
-          core.info(inspect(data));
+
+          if(status == 204){
+            core.info(`Deleted workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+          }
+          else{
+            core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
+          }
         }
       }
     } 

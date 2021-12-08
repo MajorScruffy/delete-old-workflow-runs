@@ -4,6 +4,9 @@ inputs:
   repository:
     description: 'The repository for which to delete old workflow runs'
     required: true
+  created-before:
+    description: 'Consider only the workflows created before this date for deletion'
+    required: false
 outputs:
   status: # id of output
     description: 'The status of the HTTP request'
