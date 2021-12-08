@@ -1,27 +1,27 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: Hello World
+description: Greet someone and record the time
 inputs:
   repository:
-    description: 'The repository for which to delete old workflow runs'
+    description: The repository for which to delete old workflow runs
     required: true
   created-before:
-    description: 'Consider only the workflows created before this date for deletion'
+    description: Consider only the workflows created before this date for deletion
     required: false
   actor:
-    description: 'Returns someone's workflow runs. Use the login for the user who created the push associated with the check suite or workflow run.'
+    description: Returns someone's workflow runs. Use the login for the user who created the push associated with the check suite or workflow run.
     required: false
   branch:
-    description: 'Returns workflow runs associated with a branch. Use the name of the branch of the push.'
+    description: Returns workflow runs associated with a branch. Use the name of the branch of the push.
     required: false
   event:
-    description: 'Returns workflow run triggered by the event you specify. For example, push, pull_request or issue.'
+    description: Returns workflow run triggered by the event you specify. For example, push, pull_request or issue.
     required: false
   status:
-    description: 'Returns workflow runs with the given status. Can be one of queued, in_progress, or completed.'
+    description: Returns workflow runs with the given status. Can be one of queued, in_progress, or completed.
     required: false
 outputs:
   status: # id of output
-    description: 'The status of the HTTP request'
+    description: The status of the HTTP request
 runs:
-  using: 'node12'
+  using: node12
   main: 'dist/index.js'
