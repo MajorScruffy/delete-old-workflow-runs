@@ -38,8 +38,8 @@ async function main() {
     const { status, headers, data } = await octokit.request(requestOptions);
 
     core.info(`< ${status} ${Date.now() - time}ms`);
-    core.info(headers);
-    core.info(data);
+    core.info(JSON.stringify(headers));
+    core.info(JSON.stringify(data));
 
     core.setOutput("status", status);
   } catch (error) {
