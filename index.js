@@ -16,10 +16,10 @@ async function main() {
     core.info(repository);
 
     const createdBefore = core.getInput('created-before');
-    core.info(createdBefore);
+    core.info(`Created before string ${createdBefore}`);
 
     const createdBeforeDate = new Date(createdBefore)
-    core.info(inspect(createdBeforeDate));
+    core.info(`Created before date ${createdBeforeDate}`);
 
     let parameters = [];
     parameters["page"] = 0;
@@ -47,7 +47,9 @@ async function main() {
       }
 
       for (const workflowRun of data.workflow_runs) {
-        if(createdBeforeDate < workflowRun.created_at){
+        const createdAt = new Date(workflowRun.created_at);
+
+        if(createdBeforeDate < createdAt){
           core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
           continue;
         }
