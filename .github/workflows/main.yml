@@ -9,14 +9,17 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Hello world action step
         uses: ./ # Uses an action in the root directory
         id: hello
         with:
           repository: MajorScruffy/delete-old-workflow-runs
-          created-before: "2021-12-08T16:34:00Z"
+          # created-before: "2021-12-09T16:34:00Z"
+          actor: test@test.com
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"
