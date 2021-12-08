@@ -7,6 +7,9 @@ inputs:
   workflow:
     description: The path to the workflow's .yml file.
     required: false
+  older-than-seconds:
+    description: Consider only the workflows older than the given number of seconds.
+    required: false
   created-before:
     description: Consider only the workflows created before this date for deletion.
     required: false

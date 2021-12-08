@@ -50661,6 +50661,7 @@ async function main() {
 
     let createdBeforeDate;
     const workflow = core.getInput('workflow');
+    const olderThanSeconds = core.getInput('older-than-seconds');
     const createdBefore = core.getInput('created-before');
     const actor = core.getInput('actor');
     const branch = core.getInput('branch');
@@ -50673,7 +50674,10 @@ async function main() {
       core.info(`workflow: ${workflow}`);
     }
 
-    if(!!createdBefore){
+    if(!!olderThanSeconds){
+      core.info(`older-than-seconds: ${olderThanSeconds}`);
+    }
+    else if(!!createdBefore){
       createdBeforeDate = new Date(createdBefore)
       core.info(`created-before: ${createdBeforeDate}`);
     }
@@ -50719,11 +50723,16 @@ async function main() {
           continue;
         }
 
+        if(!!olderThanSeconds && (new Date() - createdAt) / 1000 < olderThanSeconds){
+          core.info(`Skipped workflow run "${workflowRun.head_commit.message}" with ID:${workflowRun.id}...`);
+          continue;
+        }
+
         if(!!createdBeforeDate && createdBeforeDate < createdAt){
           continue;
         }
 
-        core.info(`Deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+        core.info(`Deleting workflow run "${workflowRun.head_commit.message}" with ID:${workflowRun.id}...`);
 
         let deleteParameters = [];
         deleteParameters["run_id"] = 0;
@@ -50733,12 +50742,10 @@ async function main() {
           deleteParameters
         );
 
-        core.info(`parsed request options: ${inspect(requestOptions)}`);
-
         let { status } = await octokit.request(requestOptions);
 
         if(status == 204){
-          core.info(`Deleted workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+          core.info(`Deleted workflow run with ID:${workflowRun.id}`);
         }
         else{
           core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
