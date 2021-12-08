@@ -50652,36 +50652,43 @@ async function main() {
     const octokit = new Octokit();
 
     // `repository-name` input defined in action.yml
-    const repositoryName = core.getInput('repository-name');
-    core.info(repositoryName);
+    const repository = core.getInput('repository');
+    core.info(repository);
 
     let parameters = [];
-    parameters["page"] = 2;
+    parameters["page"] = 0;
 
-    // workaround for https://github.com/octokit/request-action/issues/71
-    // un-encode "repo" in /repos/{repo} URL when "repo" parameter is set to ${{ github.repository }}
-    const { url, body, ...options } = octokit.request.endpoint(
-      "GET /repos/MajorScruffy/delete-old-workflow-runs/actions/runs",
-      parameters
-    );
-    const requestOptions = {
-      ...options,
-      data: body,
-      url: url.replace(
-        /\/repos\/([^/]+)/,
-        (_, match) => "/repos/" + decodeURIComponent(match)
-      ),
-    };
+    do {
+      parameters["page"]++;
 
-    core.info(`parsed request options: ${inspect(requestOptions)}`);
+      // workaround for https://github.com/octokit/request-action/issues/71
+      // un-encode "repo" in /repos/{repo} URL when "repo" parameter is set to ${{ github.repository }}
+      const { url, body, ...options } = octokit.request.endpoint(
+        `GET /repos/${inspect(repositoryName)}/actions/runs`,
+        parameters
+      );
 
-    const { status, headers, data } = await octokit.request(requestOptions);
+      const requestOptions = {
+        ...options,
+        data: body,
+        url: url.replace(
+          /\/repos\/([^/]+)/,
+          (_, match) => "/repos/" + decodeURIComponent(match)
+        ),
+      };
 
-    core.info(`< ${status} ${Date.now() - time}ms`);
-    core.info(JSON.stringify(headers));
-    core.info(JSON.stringify(data));
+      core.info(`parsed request options: ${inspect(requestOptions)}`);
 
-    core.setOutput("status", status);
+      const { status, headers, data } = await octokit.request(requestOptions);
+
+      data.workflow_runs
+
+      core.info(`< ${status} ${Date.now() - time}ms`);
+      core.info(JSON.stringify(headers));
+      core.info(JSON.stringify(data));
+
+      core.setOutput("status", status);
+    } while (data.workflow_runs > 0);
   } catch (error) {
     if (error.status) {
       core.info(`< ${error.status} ${Date.now() - time}ms`);

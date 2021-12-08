@@ -1,7 +1,7 @@
 name: 'Hello World'
 description: 'Greet someone and record the time'
 inputs:
-  repository-name:
+  repository:
     description: 'The name of the repository for which to delete old workflow runs'
     required: true
 outputs:

@@ -13,7 +13,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: hello
         with:
-          repository-name: MajorScruffy/delete-old-workflow-runs
+          repository: MajorScruffy/delete-old-workflow-runs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Use the output from the `hello` step
