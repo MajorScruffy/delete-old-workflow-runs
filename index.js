@@ -24,7 +24,7 @@ async function main() {
       // workaround for https://github.com/octokit/request-action/issues/71
       // un-encode "repo" in /repos/{repo} URL when "repo" parameter is set to ${{ github.repository }}
       const { url, body, ...options } = octokit.request.endpoint(
-        `GET /repos/${inspect(repository)}/actions/runs`,
+        `GET /repos/${repository}/actions/runs`,
         parameters
       );
 
