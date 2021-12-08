@@ -50660,6 +50660,7 @@ async function main() {
     parameters["page"] = 0;
 
     let createdBeforeDate;
+    const workflow = core.getInput('workflow');
     const createdBefore = core.getInput('created-before');
     const actor = core.getInput('actor');
     const branch = core.getInput('branch');
@@ -50668,9 +50669,13 @@ async function main() {
 
     core.info(`Applying filters:`);
 
+    if(!!workflow){
+      core.info(`workflow: ${workflow}`);
+    }
+
     if(!!createdBefore){
       createdBeforeDate = new Date(createdBefore)
-      core.info(`Created before date ${createdBeforeDate}`);
+      core.info(`created-before: ${createdBeforeDate}`);
     }
 
     if(!!actor){
@@ -50714,8 +50719,13 @@ async function main() {
       for (const workflowRun of data.workflow_runs) {
         const createdAt = new Date(workflowRun.created_at);
 
+        if(!!workflow && workflowRun.name != workflow){
+          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
+          continue;
+        }
+
         if(!!createdBeforeDate && createdBeforeDate < createdAt){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id} - created`);
+          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
           continue;
         }
 

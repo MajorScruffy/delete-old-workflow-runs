@@ -1,11 +1,14 @@
-name: Hello World
-description: Greet someone and record the time
+name: Delete old workflow runs
+description: Delete workflow runs that match the given filters
 inputs:
   repository:
-    description: The repository for which to delete old workflow runs
+    description: The repository for which to delete old workflow runs.
     required: true
+  workflow:
+    description: The path to the workflow's .yml file.
+    required: false
   created-before:
-    description: Consider only the workflows created before this date for deletion
+    description: Consider only the workflows created before this date for deletion.
     required: false
   actor:
     description: Returns someone's workflow runs. Use the login for the user who created the push associated with the check suite or workflow run.

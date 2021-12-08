@@ -13,10 +13,12 @@ jobs:
         id: hello
         with:
           repository: MajorScruffy/delete-old-workflow-runs
+          workflow: ".github/workflows/main.yml"
           # created-before: "2021-12-09T16:34:00Z"
           # actor: test@test.com
           # branch: main
-          event: completed
+          # event: push
+          # event: completed
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
