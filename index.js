@@ -50,7 +50,7 @@ async function main() {
 
     if(!!status){
       parameters["status"] = status;
-      core.info(`status ${status}`);
+      core.info(`status: ${status}`);
     }
 
     for(;;) {
