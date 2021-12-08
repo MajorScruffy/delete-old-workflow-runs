@@ -50655,42 +50655,42 @@ async function main() {
     const repository = core.getInput('repository');
     core.info(repository);
 
-    const createdBefore = core.getInput('created-before');
-    core.info(`Created before string ${createdBefore}`);
-
-    const createdBeforeDate = new Date(createdBefore)
-    core.info(`Created before date ${createdBeforeDate}`);
-
-    const actor = core.getInput('actor');
-    core.info(`Created before string ${actor}`);
-
-    const branch = core.getInput('branch');
-    core.info(`Created before string ${branch}`);
-
-    const event = core.getInput('event');
-    core.info(`Created before string ${event}`);
-
-    const status = core.getInput('status');
-    core.info(`Created before string ${status}`);
-
     let parameters = [];
     parameters["per_page"] = 50;
     parameters["page"] = 0;
 
+    let createdBeforeDate;
+    const createdBefore = core.getInput('created-before');
+    const actor = core.getInput('actor');
+    const branch = core.getInput('branch');
+    const event = core.getInput('event');
+    const status = core.getInput('status');
+
+    core.info(`Applying filters:`);
+
+    if(!!createdBefore){
+      createdBeforeDate = new Date(createdBefore)
+      core.info(`Created before date ${createdBeforeDate}`);
+    }
+
     if(!!actor){
       parameters["actor"] = actor;
+      core.info(`actor: ${actor}`);
     }
 
     if(!!branch){
       parameters["branch"] = branch;
+      core.info(`branch: ${branch}`);
     }
 
     if(!!event){
       parameters["event"] = event;
+      core.info(`event: ${event}`);
     }
 
     if(!!status){
       parameters["status"] = status;
+      core.info(`status ${status}`);
     }
 
     for(;;) {
@@ -50723,26 +50723,6 @@ async function main() {
           continue;
         }
 
-        if(!!actor && workflowRun.head_commit.author.email != actor){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id} - actor`);
-          continue;
-        }
-
-        if(!!branch && workflowRun.head_branch != branch){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id} - branch`);
-          continue;
-        }
-
-        if(!!event && workflowRun.event != event){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id} - event`);
-          continue;
-        }
-
-        if(!!status && workflowRun.status != status){
-          core.info(`Skipped workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id} - status`);
-          continue;
-        }
-
         core.info(`Deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}`);
 
         let deleteParameters = [];
@@ -50753,7 +50733,7 @@ async function main() {
           deleteParameters
         );
 
-        core.info(`parsed request options: ${inspect(requestOptions)}`);
+        /*core.info(`parsed request options: ${inspect(requestOptions)}`);
 
         let { status, headers, data } = await octokit.request(requestOptions);
 
@@ -50765,7 +50745,7 @@ async function main() {
         }
         else{
           core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
-        }
+        }*/
       }
     }
   } catch (error) {
