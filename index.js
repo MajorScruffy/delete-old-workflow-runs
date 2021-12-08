@@ -21,21 +21,10 @@ async function main() {
     for(;;) {
       parameters["page"]++;
 
-      // workaround for https://github.com/octokit/request-action/issues/71
-      // un-encode "repo" in /repos/{repo} URL when "repo" parameter is set to ${{ github.repository }}
-      let { url, body, ...options } = octokit.request.endpoint(
+      let requestOptions = octokit.request.endpoint(
         `GET /repos/${repository}/actions/runs`,
         parameters
       );
-
-      let requestOptions = {
-        ...options,
-        data: body,
-        url: url.replace(
-          /\/repos\/([^/]+)/,
-          (_, match) => "/repos/" + decodeURIComponent(match)
-        ),
-      };
 
       core.info(`parsed request options: ${inspect(requestOptions)}`);
 
