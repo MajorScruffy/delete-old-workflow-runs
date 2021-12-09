@@ -1,5 +1,5 @@
 {
-  "name": "delete-workflow-runs",
+  "name": "delete-old-workflow-runs",
   "version": "1.0.0",
   "description": "A GitHub Action used to delete workflow runs from a repository.",
   "main": "index.js",

@@ -48,8 +48,8 @@ Delete only the workflow runs triggered by the given event type. For example, pu
 ### `status`
 Delete only the workflow runs with the give status. Can be one of queued, in_progress, or completed.
 
-### `what-if`
-Set to true to preview the changes made by this action without deleting any workflow runs. Defaults to false.
-
 ### `maximum-workflow-runs-to-keep`
 The maximum number of workflow runs to keep, after applying all the given filters. Defaults to 5.
+
+### `what-if`
+Set to true to preview the changes made by this action without deleting any workflow runs. Defaults to false.

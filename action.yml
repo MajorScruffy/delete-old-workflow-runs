@@ -1,4 +1,4 @@
-name: Delete workflow runs
+name: Delete old workflow runs
 description: Delete workflow runs that match the given filters
 inputs:
   repository:
