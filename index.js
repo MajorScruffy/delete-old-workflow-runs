@@ -103,16 +103,16 @@ async function main() {
       for (const workflowRun of response.data.workflow_runs) {
         const createdAt = new Date(workflowRun.created_at);
 
-        index++;
-        if(!!maximumWorkflowRunsToKeep && index <= maximumWorkflowRunsToKeep){
-          continue;
-        }
-
         if(!!olderThanSeconds && (new Date() - createdAt) / 1000 < olderThanSeconds){
           continue;
         }
 
         if(!!createdBeforeDate && createdBeforeDate < createdAt){
+          continue;
+        }
+
+        index++;
+        if(!!maximumWorkflowRunsToKeep && index <= maximumWorkflowRunsToKeep){
           continue;
         }
 
