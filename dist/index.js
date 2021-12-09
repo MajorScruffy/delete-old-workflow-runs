@@ -50662,6 +50662,14 @@ async function main() {
     parameters.owner = ownerAndRepo[0];
     parameters.repo = ownerAndRepo[1];
 
+    if(!!parameters.owner){
+      throw new Error(`Owner cannot be empty. Make sure the repository input parameter is in the format {owner}/{repo}.`);
+    }
+
+    if(!!parameters.repo){
+      throw new Error(`Repository cannot be empty. Make sure the repository input parameter is in the format {owner}/{repo}.`);
+    }
+
     let createdBeforeDate;
     const workflow = core.getInput("workflow");
     const olderThanSeconds = core.getInput("older-than-seconds");
