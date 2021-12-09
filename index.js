@@ -79,6 +79,7 @@ async function main() {
       core.info(`Keeping at most ${maximumWorkflowRunsToKeep} workflow runs.`);
     }
 
+    core.info(whatIf);
     if(!!whatIf){
       core.info(`Running in what-if mode. The following workflow runs would be deleted if what-if was set to "false":`);
     }
