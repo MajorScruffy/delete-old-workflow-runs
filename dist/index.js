@@ -50764,10 +50764,6 @@ async function main() {
       }
     }
   } catch (error) {
-    if (error.status) {
-      core.info(`< ${error.status} ${Date.now() - time}ms`);
-    }
-
     core.info(inspect(error));
     core.setFailed(error.message);
   }
