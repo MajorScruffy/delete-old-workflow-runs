@@ -1,9 +1,7 @@
 # delete-workflow-runs
 A GitHub Action used to delete workflow runs from a repository.
 
-# Delete workflow runs action
-
-This action can be used to delete workflow runs. Behind the scenes it uses [Octokit request-action](https://github.com/octokit/request-action) to call the GitHub API, so you'll need to add the GITHUB_TOKEN as an environment variable:
+Behind the scenes it uses [Octokit request-action](https://github.com/octokit/request-action) to call the GitHub API, so you'll need to add the GITHUB_TOKEN as an environment variable:
 ```
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
