@@ -38,7 +38,7 @@ async function main() {
     const branch = core.getInput("branch");
     const event = core.getInput("event");
     const status = core.getInput("status");
-    const minimumWorkflowRunsToKeep = core.getInput("minimum-workflow-runs-to-keep");
+    const maximumWorkflowRunsToKeep = core.getInput("maximum-workflow-runs-to-keep");
     const whatIf = core.getInput("what-if");
 
     core.info(`Applying filters:`);
@@ -76,6 +76,10 @@ async function main() {
       core.info(`status: ${status}`);
     }
 
+    if(!!maximumWorkflowRunsToKeep){
+      core.info(`Keeping at most ${maximumWorkflowRunsToKeep} workflow runs.`);
+    }
+
     if(!!whatIf){
       core.info(`Running in what-if mode. The following workflows would be deleted if what-if was "false":`);
     }
@@ -100,7 +104,7 @@ async function main() {
         const createdAt = new Date(workflowRun.created_at);
 
         index++;
-        if(!!minimumWorkflowRunsToKeep && index <= minimumWorkflowRunsToKeep){
+        if(!!maximumWorkflowRunsToKeep && index <= maximumWorkflowRunsToKeep){
           continue;
         }
 

@@ -20,7 +20,7 @@ jobs:
           # branch: main
           # event: push
           # event: completed
-          minimum-workflows-runs-to-keep: 0
+          maximum-workflow-runs-to-keep: 0
           what-if: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
