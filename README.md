@@ -1,13 +1,26 @@
 # delete-workflow-runs
 A GitHub Action used to delete workflow runs from a repository.
 
-# Hello world javascript action
-
-This action can be used to delete workflow runs. Behind the scenes it uses [Octokit request-action](https://github.com/octokit/request-action) to call the GitHub API, so you'll need to add the GITHUB_TOKEN as an environment variable:
+Behind the scenes it uses [Octokit request-action](https://github.com/octokit/request-action) to call the GitHub API, so you'll need to add the GITHUB_TOKEN as an environment variable:
 ```
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+## Example usage
+```
+steps:
+  - name: Delete workflow runs
+    uses: MajorScruffy/delete-workflow-runs
+    id: delete-workflow-runs
+    with:
+      repository: MajorScruffy/delete-workflow-runs   # replace this with your own repository
+      older-than-seconds: 86400                       # remove all workflow runs older than 1 day
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+See also the [Demo workflow](.github/workflows/main.yml).
 
 ## Inputs
 
@@ -38,18 +51,3 @@ Delete only the workflow runs with the give status. Can be one of queued, in_pro
 ### `what-if`
 Set to true to preview the changes made by this action without deleting any workflow runs. Defaults to false.
 
-## Example usage
-
-See also the [Demo workflow](.github/workflows/main.yml).
-
-```
-steps:
-  - name: Delete workflow runs
-    uses: MajorScruffy/delete-workflow-runs
-    id: delete-workflow-runs
-    with:
-      repository: MajorScruffy/delete-workflow-runs   # replace this with your own repository
-      older-than-seconds: 86400                       # remove all workflow runs older than 1 day
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
