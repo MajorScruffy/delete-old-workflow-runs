@@ -50094,14 +50094,6 @@ try {
 
 /***/ }),
 
-/***/ 2977:
-/***/ ((module) => {
-
-module.exports = eval("require")("@actions/github");
-
-
-/***/ }),
-
 /***/ 9178:
 /***/ ((module) => {
 
@@ -50433,7 +50425,6 @@ var __webpack_exports__ = {};
 (() => {
 const { inspect } = __nccwpck_require__(3837);
 const core = __nccwpck_require__(3722);
-const github = __nccwpck_require__(2977);
 const { Octokit } = __nccwpck_require__(3145);
 
 main();
