@@ -25,6 +25,10 @@ inputs:
   status:
     description: Returns workflow runs with the given status. Can be one of queued, in_progress, or completed.
     required: false
+  minimum-workflow-runs-to-keep:
+    description: The minimum number of workflow runs to keep, after applying all the given filters.
+    required: false
+    default: 5
   what-if:
     description: Set to true to preview the changes made by this action without deleting any workflow runs.
     required: false

@@ -51,3 +51,5 @@ Delete only the workflow runs with the give status. Can be one of queued, in_pro
 ### `what-if`
 Set to true to preview the changes made by this action without deleting any workflow runs. Defaults to false.
 
+### `minimum-workflow-runs-to-keep`
+The minimum number of workflow runs to keep, after applying all the given filters. Defaults to 5.

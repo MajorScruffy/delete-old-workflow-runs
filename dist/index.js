@@ -50650,7 +50650,7 @@ async function main() {
     const octokit = new Octokit();
 
     let parameters = {};
-    parameters.per_page = 50;
+    parameters.per_page = 100;
     parameters.page = 0;
 
     const repository = core.getInput("repository");
@@ -50678,6 +50678,7 @@ async function main() {
     const branch = core.getInput("branch");
     const event = core.getInput("event");
     const status = core.getInput("status");
+    const minimumWorkflowRunsToKeep = core.getInput("minimum-workflow-runs-to-keep");
     const whatIf = core.getInput("what-if");
 
     core.info(`Applying filters:`);
@@ -50719,6 +50720,7 @@ async function main() {
       core.info(`Running in what-if mode. The following workflows would be deleted if what-if was "false":`);
     }
 
+    let index = 0;
     for(;;) {
       parameters.page++;
 
@@ -50737,7 +50739,8 @@ async function main() {
       for (const workflowRun of response.data.workflow_runs) {
         const createdAt = new Date(workflowRun.created_at);
 
-        if(!!workflow && workflowRun.name != workflow){
+        index++;
+        if(!!minimumWorkflowRunsToKeep && index <= minimumWorkflowRunsToKeep){
           continue;
         }
 
