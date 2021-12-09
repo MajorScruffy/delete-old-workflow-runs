@@ -139,7 +139,7 @@ async function main() {
         let { status } = await octokit.actions.deleteWorkflowRun(deleteParameters);
 
         if(status == 204){
-          core.info(`Deleted workflow run with ID:${workflowRun.id}`);
+          core.info(`Deleted workflow run ${workflowRun.id}.`);
         }
         else{
           core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
