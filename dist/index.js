@@ -50654,21 +50654,13 @@ async function main() {
     parameters.page = 0;
 
     const repository = core.getInput("repository");
-    const ownerAndRepo = text.split("/");
+    const ownerAndRepo = repository.split("/");
     if(ownerAndRepo.length !== 2){
       throw new Error(`The repository input parameter '${repository}' is not in the format {owner}/{repo}.`);
     }
 
     parameters.owner = ownerAndRepo[0];
     parameters.repo = ownerAndRepo[1];
-
-    if(!!parameters.owner){
-      throw new Error(`Owner cannot be empty. Make sure the repository input parameter is in the format {owner}/{repo}.`);
-    }
-
-    if(!!parameters.repo){
-      throw new Error(`Repository cannot be empty. Make sure the repository input parameter is in the format {owner}/{repo}.`);
-    }
 
     let createdBeforeDate;
     const workflow = core.getInput("workflow");
