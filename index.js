@@ -80,7 +80,7 @@ async function main() {
     }
 
     if(!!whatIf){
-      core.info(`Running in what-if mode. The following workflows would be deleted if what-if was "false":`);
+      core.info(`Running in what-if mode. The following workflow runs would be deleted if what-if was set to "false":`);
     }
 
     let index = 0;
@@ -115,7 +115,7 @@ async function main() {
           continue;
         }
 
-        const workflowRunLog = `Workflow run ${workflowRun.id} created at ${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
+        const workflowRunLog = `${workflowRun.id} created at ${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
 
         if(!!whatIf){
           core.info(`Workflow run ${workflowRunLog}`);
