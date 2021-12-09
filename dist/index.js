@@ -50722,19 +50722,19 @@ async function main() {
     for(;;) {
       parameters.page++;
 
-      let data;
+      let response;
       if(!!workflow){
-        data = await octokit.actions.listWorkflowRuns(parameters);
+        response = await octokit.actions.listWorkflowRuns(parameters);
       }
       else{
-        data = await octokit.actions.listWorkflowRunsForRepo(parameters);
+        response = await octokit.actions.listWorkflowRunsForRepo(parameters);
       }
 
-      if(data.workflow_runs <= 0){
+      if(response.data.workflow_runs <= 0){
         break;
       }
 
-      for (const workflowRun of data.workflow_runs) {
+      for (const workflowRun of response.data.workflow_runs) {
         const createdAt = new Date(workflowRun.created_at);
 
         if(!!workflow && workflowRun.name != workflow){
