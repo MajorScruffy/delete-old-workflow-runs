@@ -1,6 +1,6 @@
 const { inspect } = require("util");
-const core = require('@actions/core');
-const github = require('@actions/github');
+const core = require("@actions/core");
+const github = require("@actions/github");
 const { Octokit } = require("@octokit/action");
 
 main();
@@ -9,28 +9,34 @@ async function main() {
   try {
     const octokit = new Octokit();
 
-    // `repository-name` input defined in action.yml
-    const repository = core.getInput('repository');
-    core.info(repository);
+    let parameters = {};
+    parameters.per_page = 50;
+    parameters.page = 0;
 
-    let parameters = [];
-    parameters["per_page"] = 50;
-    parameters["page"] = 0;
+    const repository = core.getInput("repository");
+    const ownerAndRepo = text.split("/");
+    if(ownerAndRepo.length !== 2){
+      throw new Error(`The repository input parameter '${repository}' is not in the format {owner}/{repo}.`);
+    }
+
+    parameters.owner = ownerAndRepo[0];
+    parameters.repo = ownerAndRepo[1];
 
     let createdBeforeDate;
-    const workflow = core.getInput('workflow');
-    const olderThanSeconds = core.getInput('older-than-seconds');
-    const createdBefore = core.getInput('created-before');
-    const actor = core.getInput('actor');
-    const branch = core.getInput('branch');
-    const event = core.getInput('event');
-    const status = core.getInput('status');
-    const whatIf = core.getInput('what-if');
+    const workflow = core.getInput("workflow");
+    const olderThanSeconds = core.getInput("older-than-seconds");
+    const createdBefore = core.getInput("created-before");
+    const actor = core.getInput("actor");
+    const branch = core.getInput("branch");
+    const event = core.getInput("event");
+    const status = core.getInput("status");
+    const whatIf = core.getInput("what-if");
 
     core.info(`Applying filters:`);
 
     if(!!workflow){
       core.info(`workflow: ${workflow}`);
+      parameters.workflow_id = workflow;
     }
 
     if(!!olderThanSeconds){
@@ -42,38 +48,39 @@ async function main() {
     }
 
     if(!!actor){
-      parameters["actor"] = actor;
+      parameters.actor = actor;
       core.info(`actor: ${actor}`);
     }
 
     if(!!branch){
-      parameters["branch"] = branch;
+      parameters.branch = branch;
       core.info(`branch: ${branch}`);
     }
 
     if(!!event){
-      parameters["event"] = event;
+      parameters.event = event;
       core.info(`event: ${event}`);
     }
 
     if(!!status){
-      parameters["status"] = status;
+      parameters.status = status;
       core.info(`status: ${status}`);
     }
 
     if(!!whatIf){
-      core.info(`Running in what-if mode. The following workflows would be deleted if what-if was 'false':`);
+      core.info(`Running in what-if mode. The following workflows would be deleted if what-if was "false":`);
     }
 
     for(;;) {
-      parameters["page"]++;
+      parameters.page++;
 
-      let requestOptions = octokit.request.endpoint(
-        `GET /repos/${repository}/actions/runs`,
-        parameters
-      );
-
-      let { data } = await octokit.request(requestOptions);
+      let data;
+      if(!!workflow){
+        data = await octokit.actions.listWorkflowRuns(parameters);
+      }
+      else{
+        data = await octokit.actions.listWorkflowRunsForRepo(parameters);
+      }
 
       if(data.workflow_runs <= 0){
         break;
@@ -103,7 +110,8 @@ async function main() {
         let deleteParameters = [];
         deleteParameters["run_id"] = 0;
 
-        let requestOptions = octokit.request.endpoint(
+        let requestOptions = octokit.actions.getw.deleteWorkflowRun
+        request.endpoint(
           `DELETE /repos/${repository}/actions/runs/${workflowRun.id}`,
           deleteParameters
         );
