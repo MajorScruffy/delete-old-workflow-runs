@@ -115,13 +115,15 @@ async function main() {
           continue;
         }
 
+        const workflowRunLog = `Workflow run ${workflowRun.id} created at ${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
+
         if(!!whatIf){
-          core.info(`Workflow run ${workflowRun.id} created at:${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`);
+          core.info(`Workflow run ${workflowRunLog}`);
 
           continue;
         }
         else{
-          core.info(`Deleting workflow run ${workflowRun.id} created at:${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}...`);
+          core.info(`Deleting workflow run ${workflowRunLog}...`);
         }
 
         let deleteParameters = {
