@@ -115,16 +115,13 @@ async function main() {
           continue;
         }
 
-        let deleteParameters = [];
-        deleteParameters["run_id"] = 0;
+        let deleteParameters = {
+          owner: parameters.owner,
+          repo: parameters.repo,
+          run_id: workflowRun.id
+        };
 
-        let requestOptions = octokit.actions.getw.deleteWorkflowRun
-        request.endpoint(
-          `DELETE /repos/${repository}/actions/runs/${workflowRun.id}`,
-          deleteParameters
-        );
-
-        let { status } = await octokit.request(requestOptions);
+        let { status } = await octokit.actions.deleteWorkflowRun(deleteParameters);
 
         if(status == 204){
           core.info(`Deleted workflow run with ID:${workflowRun.id}`);
