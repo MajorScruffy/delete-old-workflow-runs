@@ -115,7 +115,7 @@ async function main() {
           continue;
         }
 
-        core.info(`Deleting workflow run "${workflowRun.head_commit.message}" with ID:${workflowRun.id}...`);
+        core.info(`Deleting workflow run ${workflowRun.id} created at:${workflowRun.created_at}. Title:${workflowRun.head_commit.message}, Author:${workflowRun.head_commit.author}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}...`);
 
         if(!!whatIf){
           continue;
