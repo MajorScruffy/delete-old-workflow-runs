@@ -11,11 +11,10 @@ env:
 ```
 steps:
   - name: Delete workflow runs
-    uses: MajorScruffy/delete-workflow-runs
-    id: delete-workflow-runs
+    uses: MajorScruffy/delete-old-workflow-runs@v0.1.0
     with:
-      repository: MajorScruffy/delete-workflow-runs   # replace this with your own repository
-      older-than-seconds: 86400                       # remove all workflow runs older than 1 day
+      repository: MajorScruffy/delete-old-workflow-runs   # replace this with your own repository
+      older-than-seconds: 86400                           # remove all workflow runs older than 1 day
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
