@@ -10,7 +10,7 @@ async function main() {
 
     let parameters = {};
     parameters.per_page = 100;
-    parameters.page = 0;
+    parameters.page = 1;
 
     const repository = core.getInput("repository");
     const ownerAndRepo = repository.split("/");
@@ -37,7 +37,6 @@ async function main() {
     const branch = core.getInput("branch");
     const event = core.getInput("event");
     const status = core.getInput("status");
-    const maximumWorkflowRunsToKeep = core.getInput("maximum-workflow-runs-to-keep");
     const whatIf = core.getInput("what-if");
 
     core.info(`Applying filters:`);
@@ -49,10 +48,12 @@ async function main() {
 
     if(!!olderThanSeconds){
       core.info(`older-than-seconds: ${olderThanSeconds}`);
+      parameters.created = `<=${new Date(Date.now() - olderThanSeconds * 1000).toISOString()}`
     }
     else if(!!createdBefore){
       createdBeforeDate = new Date(createdBefore)
       core.info(`created-before: ${createdBeforeDate}`);
+      parameters.created = `<=${createdBeforeDate.toISOString()}`
     }
 
     if(!!actor){
@@ -75,10 +76,6 @@ async function main() {
       core.info(`status: ${status}`);
     }
 
-    if(!!maximumWorkflowRunsToKeep){
-      core.info(`Keeping at most ${maximumWorkflowRunsToKeep} workflow runs.`);
-    }
-
     if(whatIf !== "false"){
       if(whatIf !== "true"){
         core.warning(`Invalid value "${whatIf}" for what-if. Should be either "true" or "false". Defaulting to "true".`);
@@ -87,11 +84,9 @@ async function main() {
       core.info(`Running in what-if mode. The following workflow runs would be deleted if what-if was set to "false":`);
     }
 
-    let index = 0;
     for(;;) {
-      parameters.page++;
-
       let response;
+
       if(!!workflow){
         response = await octokit.actions.listWorkflowRuns(parameters);
       }
@@ -104,21 +99,6 @@ async function main() {
       }
 
       for (const workflowRun of response.data.workflow_runs) {
-        const createdAt = new Date(workflowRun.created_at);
-
-        if(!!olderThanSeconds && (new Date() - createdAt) / 1000 < olderThanSeconds){
-          continue;
-        }
-
-        if(!!createdBeforeDate && createdBeforeDate < createdAt){
-          continue;
-        }
-
-        index++;
-        if(!!maximumWorkflowRunsToKeep && index <= maximumWorkflowRunsToKeep){
-          continue;
-        }
-
         const workflowRunLog = `${workflowRun.id} created at ${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
 
         if(whatIf !== "false"){
@@ -144,6 +124,10 @@ async function main() {
         else{
           core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
         }
+      }
+
+      if(whatIf !== "false"){
+        parameters.page += 1
       }
     }
   } catch (error) {
