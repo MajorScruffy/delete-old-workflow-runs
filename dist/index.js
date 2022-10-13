@@ -50562,8 +50562,11 @@ async function main() {
         }
       }
 
-      if((whatIf !== "false" || !deletedFromCurrentPage) &&
-        response.data.total_count > parameters.per_page){
+      if(deletedFromCurrentPage && response.data.total_count < parameters.per_page){
+        break;
+      }
+
+      if(whatIf !== "false" || !deletedFromCurrentPage){
         parameters.page += 1;
       }
     }
