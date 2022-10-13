@@ -99,7 +99,8 @@ async function main() {
       }
 
       for (const workflowRun of response.data.workflow_runs) {
-        const workflowRunLog = `${workflowRun.id} created at ${workflowRun.created_at}. Title: "${workflowRun.head_commit.message}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
+        const title = workflowRun.head_commit.message.split("\n")[0]
+        const workflowRunLog = `${workflowRun.id} created at ${workflowRun.created_at}. Title: "${title}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
 
         if(whatIf !== "false"){
           core.info(`Workflow run ${workflowRunLog}`);
@@ -122,7 +123,7 @@ async function main() {
           core.info(`Deleted workflow run ${workflowRun.id}.`);
         }
         else{
-          core.warning(`Something went wrong while deleting workflow "${workflowRun.head_commit.message}" with ID:${workflowRun.id}. Status code: ${status}`);
+          core.warning(`Something went wrong while deleting workflow "${title}" with ID:${workflowRun.id}. Status code: ${status}`);
         }
       }
 
