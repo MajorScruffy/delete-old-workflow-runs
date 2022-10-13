@@ -137,7 +137,8 @@ async function main() {
         }
       }
 
-      if(whatIf !== "false" || !deletedFromCurrentPage){
+      if((whatIf !== "false" || !deletedFromCurrentPage) &&
+        response.data.total_count > parameters.per_page){
         parameters.page += 1;
       }
     }
