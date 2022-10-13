@@ -50527,6 +50527,12 @@ async function main() {
         const title = workflowRun.head_commit.message.split("\n")[0]
         const workflowRunLog = `${workflowRun.id} created at ${workflowRun.created_at}. Title: "${title}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
 
+        if(process.env.GITHUB_RUN_ID == workflowRun.id){
+          core.info(`Skipping current workflow run.`);
+
+          continue;
+        }
+
         if(whatIf !== "false"){
           core.info(`Workflow run ${workflowRunLog}`);
 
