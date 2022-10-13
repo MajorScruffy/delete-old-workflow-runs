@@ -10,9 +10,9 @@ jobs:
 
       - name: Delete workflow runs
         uses: ./ # Uses an action in the root directory
-        id: delete-workflow-runs
+        id: delete-old-workflow-runs
         with:
-          repository: MajorScruffy/delete-workflow-runs
+          repository: MajorScruffy/delete-old-workflow-runs
           workflow: ".github/workflows/main.yml"
           # older-than-seconds: 3600
           # created-before: "2021-12-08T16:34:00Z"
