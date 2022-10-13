@@ -49,3 +49,13 @@ Delete only the workflow runs with the give status. Can be one of queued, in_pro
 
 ### `what-if`
 Set to true to preview the changes made by this action without deleting any workflow runs. Defaults to false.
+
+## Build
+
+Before pushing and tagging follow these steps:
+
+1. Install `vercel/ncc` by running this command in your terminal. `npm i -g @vercel/ncc`
+
+2. Compile your `index.js` file. `ncc build index.js --license licenses.txt`
+
+More more information, go [here](https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action#commit-tag-and-push-your-action-to-github)
