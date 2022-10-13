@@ -29,7 +29,6 @@ async function main() {
       throw new Error(`Repository cannot be empty. Make sure the repository input parameter '${repository}' is in the format {owner}/{repo}.`);
     }
 
-    let createdBeforeDate;
     const workflow = core.getInput("workflow");
     const olderThanSeconds = core.getInput("older-than-seconds");
     const createdBefore = core.getInput("created-before");
@@ -48,12 +47,12 @@ async function main() {
 
     if(!!olderThanSeconds){
       core.info(`older-than-seconds: ${olderThanSeconds}`);
-      parameters.created = `<=${new Date(Date.now() - olderThanSeconds * 1000).toISOString()}`
+      parameters.created = `<=${new Date(Date.now() - olderThanSeconds * 1000).toISOString()}`;
     }
     else if(!!createdBefore){
-      createdBeforeDate = new Date(createdBefore)
+      let createdBeforeDate = new Date(createdBefore);
       core.info(`created-before: ${createdBeforeDate}`);
-      parameters.created = `<=${createdBeforeDate.toISOString()}`
+      parameters.created = `<=${createdBeforeDate.toISOString()}`;
     }
 
     if(!!actor){
@@ -98,6 +97,7 @@ async function main() {
         break;
       }
 
+      let deletedFromCurrentPage = false;
       for (const workflowRun of response.data.workflow_runs) {
         const title = workflowRun.head_commit.message.split("\n")[0]
         const workflowRunLog = `${workflowRun.id} created at ${workflowRun.created_at}. Title: "${title}", Author: ${workflowRun.head_commit.author.name} - ${workflowRun.head_commit.author.email}, Branch: ${workflowRun.head_branch}, Workflow: ${workflowRun.name}`;
@@ -122,6 +122,7 @@ async function main() {
 
           if(status == 204){
             core.info(`Deleted workflow run ${workflowRun.id}.`);
+            deletedFromCurrentPage = true;
           } else{
             core.warning(`Something went wrong while deleting workflow "${title}" with ID:${workflowRun.id}. Status code: ${status}`);
           }
@@ -130,8 +131,8 @@ async function main() {
         }
       }
 
-      if(whatIf !== "false"){
-        parameters.page += 1
+      if(whatIf !== "false" || !deletedFromCurrentPage){
+        parameters.page += 1;
       }
     }
   } catch (error) {
