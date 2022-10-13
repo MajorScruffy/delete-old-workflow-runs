@@ -117,13 +117,16 @@ async function main() {
           run_id: workflowRun.id
         };
 
-        let { status } = await octokit.actions.deleteWorkflowRun(deleteParameters);
+        try {
+          let { status } = await octokit.actions.deleteWorkflowRun(deleteParameters);
 
-        if(status == 204){
-          core.info(`Deleted workflow run ${workflowRun.id}.`);
-        }
-        else{
-          core.warning(`Something went wrong while deleting workflow "${title}" with ID:${workflowRun.id}. Status code: ${status}`);
+          if(status == 204){
+            core.info(`Deleted workflow run ${workflowRun.id}.`);
+          } else{
+            core.warning(`Something went wrong while deleting workflow "${title}" with ID:${workflowRun.id}. Status code: ${status}`);
+          }
+        } catch (error) {
+          core.info(inspect(error));
         }
       }
 
